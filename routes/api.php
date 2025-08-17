@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\TodoController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\LogoutController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Auth\PasswordResetController;
+
 
 
 Route::get('/user', function (Request $request) {
@@ -16,6 +18,10 @@ Route::post('/register', RegisterController::class);
 Route::post('/login', LoginController::class);
 Route::post('/logout', LogoutController::class)->middleware('auth:sanctum');
 
+Route::post('/password/request-token', [PasswordResetController::class, 'requestToken']);
+Route::post('/password/reset', [PasswordResetController::class, 'resetPassword']);
+
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
     Route::apiResource('todo', TodoController::class);
 });
